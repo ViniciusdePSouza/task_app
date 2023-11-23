@@ -1,32 +1,21 @@
-import 'package:alura/components/task.dart';
 import 'package:flutter/material.dart';
+import 'package:nosso_primeiro_projeto/components/task.dart';
 
 class TaskInherited extends InheritedWidget {
   TaskInherited({
-    super.key,
+    Key? key,
     required Widget child,
-  }) : super(child: child);
+  }) : super(key: key, child: child);
 
   final List<Task> taskList = [
-    Task(
-        'Andar de Bike',
-        'https://www.opovo.com.br/_midias/jpg/2020/02/17/750x500/1_atletico-11769013.jpg',
-        3),
-    Task(
-        'Aprender Flutter',
-        'https://www.opovo.com.br/_midias/jpg/2020/02/17/750x500/1_atletico-11769013.jpg',
-        2),
-    Task(
-        'Ir ao cinema',
-        'https://www.opovo.com.br/_midias/jpg/2020/02/17/750x500/1_atletico-11769013.jpg',
-        4),
-    Task(
-        'Ir ao cinema',
-        'https://www.opovo.com.br/_midias/jpg/2020/02/17/750x500/1_atletico-11769013.jpg',
-        1),
+    Task('Aprender Flutter', 'assets/images/dash.png', 3  ),
+    Task('Andar de Bike', 'assets/images/bike.webp', 2),
+    Task('Meditar', 'assets/images/meditar.jpeg', 5),
+    Task('Ler', 'assets/images/livro.jpg', 4),
+    Task('Jogar', 'assets/images/jogar.jpg', 1),
   ];
 
-  void addNewTask(String name, String photo, int difficulty) {
+  void newTask(String name, String photo,int difficulty){
     taskList.add(Task(name, photo, difficulty));
   }
 
