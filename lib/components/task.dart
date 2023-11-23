@@ -6,14 +6,16 @@ class Task extends StatefulWidget {
   final String photoUrl;
   final int difficulty;
 
-  const Task(this.name, this.photoUrl, this.difficulty, {super.key});
+  Task(this.name, this.photoUrl, this.difficulty, {super.key});
+
+  int level = 0;
 
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-  int level = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,7 @@ class _TaskState extends State<Task> {
                       child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              level++;
+                              widget.level++;
                             });
                           },
                           child: Column(
@@ -96,14 +98,14 @@ class _TaskState extends State<Task> {
                         child: LinearProgressIndicator(
                           color: Colors.white,
                           value: (widget.difficulty > 0)
-                              ? (level / widget.difficulty) / 10
+                              ? (widget.level / widget.difficulty) / 10
                               : 1,
                         )),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(
-                      'Nível $level',
+                      'Nível ${widget.level}',
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),

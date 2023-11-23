@@ -1,7 +1,10 @@
+import 'package:alura/data/task_inherited.dart';
 import 'package:flutter/material.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({super.key});
+  const FormScreen({Key? key, required this.taskContext}) : super(key: key);
+
+  final BuildContext taskContext;
 
   @override
   State<FormScreen> createState() => _FormScreenState();
@@ -13,6 +16,25 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController imageController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool valueValidator(String? value) {
+    if (value != null && value.isEmpty) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool difficultyValidator(String? value) {
+    if (value != null && value.isEmpty) {
+      if (int.parse(value!) > 5 ||
+          int.parse(value) < 1) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +58,7 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       validator: (String? value) {
-                        if (value != null && value.isEmpty) {
+                        if (valueValidator(value)) {
                           return 'The task needs a name';
                         }
                         return null;
@@ -55,9 +77,7 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       validator: (value) {
-                        if (value!.isEmpty ||
-                            int.parse(value) > 5 ||
-                            int.parse(value) < 1) {
+                        if (valueValidator(value) || difficultyValidator(value)) {
                           return 'The task needs a difficulty between 1 and 5';
                         }
                         return null;
@@ -80,7 +100,7 @@ class _FormScreenState extends State<FormScreen> {
                         setState(() {});
                       },
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (valueValidator(value)) {
                           return 'The task need a url for the photo';
                         }
                         return null;
@@ -121,14 +141,17 @@ class _FormScreenState extends State<FormScreen> {
                   ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          print(nameController.text);
-                          print(difficultyController.text);
-                          print(imageController.text);
+                          TaskInherited.of(widget.taskContext).addNewTask(
+                              nameController.text,
+                              imageController.text,
+                              int.parse(difficultyController.text));
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Printando nova tarefa'),
+                              content: Text('Criando nova tarefa'),
                             ),
                           );
+                          Navigator.pop(context);
                         }
                       },
                       child: const Text('Adicionar'))
